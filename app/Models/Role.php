@@ -9,10 +9,10 @@ class Role extends Model
 {
     use HasFactory;
 
-    /**
-     * Mass assignable attributes.
-     */
-    protected $fillable = [
-        'role_name', // Tambahkan properti yang ingin diizinkan
-    ];
+    protected $fillable = ['role_name'];
+
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

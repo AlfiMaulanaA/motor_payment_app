@@ -5,7 +5,12 @@
 @section('content')
     <div class="container">
         <h1>Daftar Paket Kredit</h1>
-        <a href="{{ route('kredit-paket.create') }}" class="btn btn-primary mb-3">Tambah Paket Kredit</a>
+
+        <!-- Tombol Tambah Paket Kredit hanya untuk admin -->
+        @can('manage-kredit-paket')
+            <a href="{{ route('kredit-paket.create') }}" class="btn btn-primary mb-3">Tambah Paket Kredit</a>
+        @endcan
+
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -22,20 +27,25 @@
                 @foreach ($kreditPaket as $paket)
                     <tr>
                         <td>{{ $paket->paket_kode }}</td>
-                        <td>{{ number_format($paket->paket_harga_cash) }}</td>
-                        <td>{{ number_format($paket->paket_uang_muka) }}</td>
+                        <td>{{ number_format($paket->paket_harga_cash, 0, ',', '.') }}</td>
+                        <td>{{ number_format($paket->paket_uang_muka, 0, ',', '.') }}</td>
                         <td>{{ $paket->paket_jumlah_cicilan }}</td>
                         <td>{{ $paket->paket_bunga }}%</td>
-                        <td>{{ number_format($paket->paket_nilai_cicilan) }}</td>
+                        <td>{{ number_format($paket->paket_nilai_cicilan, 0, ',', '.') }}</td>
                         <td>
-                            <a href="{{ route('kredit-paket.edit', $paket->paket_kode) }}"
-                                class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('kredit-paket.destroy', $paket->paket_kode) }}" method="POST"
-                                style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                            </form>
+                            <!-- Tombol Edit dan Hapus hanya untuk admin -->
+                            @can('manage-kredit-paket')
+                                <a href="{{ route('kredit-paket.edit', $paket->paket_kode) }}"
+                                    class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{{ route('kredit-paket.destroy', $paket->paket_kode) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                </form>
+                            @else
+                                <span class="text-muted">Akses Terbatas</span>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach

@@ -32,10 +32,11 @@
                     <label for="motor_harga" class="form-label">Harga</label>
                     <input type="number" class="form-control" id="motor_harga" name="motor_harga" required>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label for="motor_gambar" class="form-label">Gambar</label>
+                <div class="mb-3">
+                    <label for="motor_gambar" class="form-label">Gambar Motor</label>
                     <input type="file" class="form-control" id="motor_gambar" name="motor_gambar" accept="image/*">
                 </div>
+
             </div>
             <div class="text-center mt-4">
                 <button type="submit" class="btn btn-primary">Simpan</button>

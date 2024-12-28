@@ -5,7 +5,12 @@
 @section('content')
     <div class="container">
         <h1>Daftar Pembayaran Cicilan</h1>
-        <a href="{{ route('bayar-cicilan.create') }}" class="btn btn-primary mb-3">Tambah Pembayaran Cicilan</a>
+
+        <!-- Tombol Tambah Pembayaran Cicilan hanya untuk admin -->
+        @can('manage-bayar-cicilan')
+            <a href="{{ route('bayar-cicilan.create') }}" class="btn btn-primary mb-3">Tambah Pembayaran Cicilan</a>
+        @endcan
+
         <table class="table table-bordered">
             <thead>
                 <tr>
@@ -25,19 +30,24 @@
                         <td>{{ $cicilan->cicilan_kode }}</td>
                         <td>{{ $cicilan->beliKredit->kridit_kode }}</td>
                         <td>{{ $cicilan->cicilan_tanggal }}</td>
-                        <td>{{ number_format($cicilan->cicilan_jumlah) }}</td>
+                        <td>{{ number_format($cicilan->cicilan_jumlah, 0, ',', '.') }}</td>
                         <td>{{ $cicilan->cicilan_ke }}</td>
                         <td>{{ $cicilan->cicilan_sisa_ke }}</td>
-                        <td>{{ number_format($cicilan->cicilan_sisa_harga) }}</td>
+                        <td>{{ number_format($cicilan->cicilan_sisa_harga, 0, ',', '.') }}</td>
                         <td>
-                            <a href="{{ route('bayar-cicilan.edit', $cicilan->cicilan_kode) }}"
-                                class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('bayar-cicilan.destroy', $cicilan->cicilan_kode) }}" method="POST"
-                                style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                            </form>
+                            <!-- Tombol Edit dan Hapus hanya untuk admin -->
+                            @can('manage-bayar-cicilan')
+                                <a href="{{ route('bayar-cicilan.edit', $cicilan->cicilan_kode) }}"
+                                    class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{{ route('bayar-cicilan.destroy', $cicilan->cicilan_kode) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                </form>
+                            @else
+                                <span class="text-muted">Akses Terbatas</span>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach

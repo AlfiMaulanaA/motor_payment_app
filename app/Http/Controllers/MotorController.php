@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Motor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MotorController extends Controller
 {
@@ -26,16 +27,15 @@ class MotorController extends Controller
             'motor_type' => 'required|string|max:15',
             'motor_warna_pilihan' => 'required|string|max:70',
             'motor_harga' => 'required|numeric',
-            'motor_gambar' => 'nullable|file|mimes:jpg,png',
+            'motor_gambar' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $motor = new Motor($validated);
-
+        // Simpan gambar ke storage jika ada
         if ($request->hasFile('motor_gambar')) {
-            $motor->motor_gambar = file_get_contents($request->file('motor_gambar'));
+            $validated['motor_gambar'] = $request->file('motor_gambar')->store('motor_images', 'public');
         }
 
-        $motor->save();
+        Motor::create($validated);
 
         return redirect()->route('motors.index')->with('success', 'Motor berhasil ditambahkan!');
     }
@@ -57,22 +57,31 @@ class MotorController extends Controller
             'motor_type' => 'required|string|max:15',
             'motor_warna_pilihan' => 'required|string|max:70',
             'motor_harga' => 'required|numeric',
-            'motor_gambar' => 'nullable|file|mimes:jpg,png',
+            'motor_gambar' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $motor->update($validated);
-
+        // Hapus gambar lama jika ada gambar baru
         if ($request->hasFile('motor_gambar')) {
-            $motor->motor_gambar = file_get_contents($request->file('motor_gambar'));
-            $motor->save();
+            if ($motor->motor_gambar) {
+                Storage::disk('public')->delete($motor->motor_gambar);
+            }
+            $validated['motor_gambar'] = $request->file('motor_gambar')->store('motor_images', 'public');
         }
+
+        $motor->update($validated);
 
         return redirect()->route('motors.index')->with('success', 'Motor berhasil diperbarui!');
     }
 
     public function destroy(Motor $motor)
     {
+        // Hapus gambar dari storage jika ada
+        if ($motor->motor_gambar) {
+            Storage::disk('public')->delete($motor->motor_gambar);
+        }
+
         $motor->delete();
+
         return redirect()->route('motors.index')->with('success', 'Motor berhasil dihapus!');
     }
 }

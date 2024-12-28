@@ -5,7 +5,12 @@
 @section('content')
     <div class="container">
         <h1 class="my-4 text-center">Daftar Motor</h1>
-        <a href="{{ route('motors.create') }}" class="btn btn-primary mb-3">Tambah Motor</a>
+
+        <!-- Hanya admin yang bisa melihat tombol Tambah -->
+        @can('manage-motors')
+            <a href="{{ route('motors.create') }}" class="btn btn-primary mb-3">Tambah Motor</a>
+        @endcan
+
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
@@ -13,6 +18,7 @@
                     <th>Merk</th>
                     <th>Tipe</th>
                     <th>Harga</th>
+                    <th>Gambar</th> <!-- Kolom untuk Gambar -->
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -24,13 +30,28 @@
                         <td>{{ $motor->motor_type }}</td>
                         <td>{{ number_format($motor->motor_harga, 0, ',', '.') }}</td>
                         <td>
-                            <a href="{{ route('motors.edit', $motor->motor_kode) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('motors.destroy', $motor->motor_kode) }}" method="POST"
-                                style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
-                            </form>
+                            @if ($motor->motor_gambar)
+                                <img src="{{ asset('storage/' . $motor->motor_gambar) }}" alt="Motor Gambar"
+                                    class="img-thumbnail" width="100">
+                            @else
+                                <span class="text-muted">Tidak Ada Gambar</span>
+                            @endif
+                        </td>
+
+
+                        <td>
+                            <!-- Tindakan Edit dan Hapus hanya untuk admin -->
+                            @can('manage-motors')
+                                <a href="{{ route('motors.edit', $motor->motor_kode) }}" class="btn btn-warning btn-sm">Edit</a>
+                                <form action="{{ route('motors.destroy', $motor->motor_kode) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                                </form>
+                            @else
+                                <span class="text-muted">View-Only</span>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach
