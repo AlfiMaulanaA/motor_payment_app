@@ -67,15 +67,177 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 ## Requirment
 
-Application Tecknologi : LARAVEL 11, Bootstrap 5
-Database Server : MYSQL LARAGON
-Development Tools : HERD
-IDE : Visual Studio Code
-Auth : Breze
+-   Application Tecknologi : LARAVEL 11, Bootstrap 5
+-   Database Server : MYSQL LARAGON
+-   Development Tools : HERD
+-   IDE : Visual Studio Code
+-   Auth : Breze
 
+```ini
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=pembelian_motor
 DB_USERNAME=root
 DB_PASSWORD=
+```
+
+# Aplikasi Pembelian Motor
+
+## 📋 Pendahuluan
+
+Aplikasi Pembelian Motor adalah sistem manajemen pembelian motor yang mencakup fitur pembelian secara **cash** dan **kredit**, pengelolaan data pembeli, pelaporan transaksi, serta visualisasi data penjualan. Sistem ini dirancang untuk digunakan dalam jaringan intranet dengan keamanan dan hak akses pengguna yang terkontrol.
+
+---
+
+## 📂 Daftar Isi
+
+1. [Fitur Utama](#fitur-utama)
+2. [Kebutuhan Sistem](#kebutuhan-sistem)
+3. [Desain Database](#desain-database)
+4. [Teknologi yang Digunakan](#teknologi-yang-digunakan)
+5. [Panduan Instalasi](#panduan-instalasi)
+6. [Panduan Penggunaan](#panduan-penggunaan)
+7. [Laporan dan Visualisasi Data](#laporan-dan-visualisasi-data)
+8. [Keamanan dan Akses](#keamanan-dan-akses)
+9. [Kontribusi](#kontribusi)
+10. [Lisensi](#lisensi)
+
+---
+
+## ✨ Fitur Utama
+
+1. **Manajemen Data Motor**
+
+    - Tambah, edit, hapus, dan cari data motor.
+    - Upload gambar motor.
+
+2. **Manajemen Data Pembeli**
+
+    - Pengelolaan data pembeli untuk pembelian cash maupun kredit.
+
+3. **Transaksi**
+
+    - Pengelolaan transaksi pembelian cash dan kredit.
+    - Sistem pembayaran cicilan kredit.
+
+4. **Laporan**
+
+    - Laporan penjualan motor per kategori (cash/kredit).
+    - Grafik penjualan berdasarkan merk motor.
+    - Analisis data keuangan.
+
+5. **Halaman Kontak Help & Info**
+
+    - Informasi kontak bantuan teknis dan lokasi kantor.
+
+6. **Hak Akses**
+    - Perbedaan akses antara admin dan user:
+        - **Admin**: Akses penuh ke semua fitur CRUD.
+        - **User**: Hanya akses view dan input data tertentu.
+
+---
+
+## 🖥️ Kebutuhan Sistem
+
+### 1. Perangkat Keras
+
+-   **Server**: Intel Pentium 4, RAM 128 MB, HDD 100 GB.
+-   **Klien**: Intel Pentium III, RAM 128 MB, HDD 100 GB.
+-   **Pendukung**: Printer, media penyimpanan (CD/DVD).
+
+### 2. Perangkat Lunak
+
+-   **Sistem Operasi**: Windows XP/7 atau Linux.
+-   **Database**: MySQL.
+-   **Web Server**: Apache.
+-   **Framework**: Laravel + Tailwind CSS.
+-   **Bahasa Pemrograman**:
+    -   Server-side: PHP.
+    -   Frontend: HTML, CSS, JavaScript.
+
+---
+
+## 🗃️ Desain Database
+
+### Tabel Utama:
+
+1. **Users**
+
+    - `id`, `name`, `email`, `password`, `role_id`.
+
+2. **Roles**
+
+    - `id`, `role_name`.
+
+3. **Motors**
+
+    - `motor_kode`, `motor_merk`, `motor_type`, `motor_warna_pilihan`, `motor_harga`, `motor_gambar`.
+
+4. **Pembelis**
+
+    - `pembeli_No_KTP`, `pembeli_nama`, `pembeli_alamat`, `pembeli_telepon`.
+
+5. **BeliCash**
+
+    - `cash_kode`, `pembeli_No_KTP`, `motor_kode`, `cash_tanggal`, `cash_bayar`.
+
+6. **BeliKredit**
+
+    - `kridit_kode`, `pembeli_No_KTP`, `motor_kode`, `paket_kode`, `kridit_tanggal`, `fotokopi_KTP`.
+
+7. **BayarCicilan**
+    - `cicilan_kode`, `kridit_kode`, `cicilan_tanggal`, `cicilan_jumlah`.
+
+---
+
+## 🔧 Teknologi yang Digunakan
+
+-   **Framework Backend**: Laravel 10.
+-   **Frontend Styling**: Tailwind CSS.
+-   **Visualisasi Data**: Chart.js.
+-   **Database Management**: MySQL.
+-   **Tool Development**: Node.js, Composer.
+
+---
+
+## 🚀 Panduan Instalasi
+
+### 1. Clone Repository
+
+```bash
+git clone https://github.com/AlfiMaulanaA/motor_payment_app.git
+cd motor_payment_app
+```
+
+```bash
+composer install
+```
+
+```bash
+npm install
+```
+
+```bash
+npm run build
+```
+
+```bash
+php artisan migrate
+```
+
+```bash
+copy .env.example .env
+```
+
+```bash
+php artisan key:generate
+```
+
+```bash
+php artisan config:cache
+```
+
+```bash
+php artisan serve
+```
