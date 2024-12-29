@@ -12,6 +12,7 @@ use App\Http\Controllers\BeliCashController;
 use App\Http\Controllers\BeliKreditController;
 use App\Http\Controllers\KreditPaketController;
 use App\Http\Controllers\BayarCicilanController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,13 @@ Route::middleware('guest')->group(function () {
 
 // Logout hanya dapat diakses oleh pengguna yang sudah login
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+
+Route::get('/register', [RegisteredUserController::class, 'create'])
+    ->middleware('guest')
+    ->name('register');
+
+Route::post('/register', [RegisteredUserController::class, 'store'])
+    ->middleware('guest');
 
 // Halaman setelah login
 Route::middleware('auth')->group(function () {

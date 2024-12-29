@@ -205,38 +205,62 @@ Aplikasi Pembelian Motor adalah sistem manajemen pembelian motor yang mencakup f
 
 ### 1. Clone Repository
 
+Clone kode repository ke Lokal
+
 ```bash
 git clone https://github.com/AlfiMaulanaA/motor_payment_app.git
 cd motor_payment_app
 ```
 
+Install Dev Tools Composer
+
 ```bash
 composer install
 ```
+
+Install Node Package Manajer
 
 ```bash
 npm install
 ```
 
+Build Applikasi
+
 ```bash
 npm run build
 ```
 
-```bash
-php artisan migrate
-```
+Copy Template file .env otomatic
 
 ```bash
 copy .env.example .env
 ```
 
+Buat API KEY untuk file .env
+
 ```bash
 php artisan key:generate
 ```
 
+Clear Config
+
 ```bash
 php artisan config:cache
 ```
+
+Migrasi Database ke database dan buat database
+
+```bash
+php artisan migrate
+```
+
+Mehubungkan dan aktifkan fungsi storage untuk gambar
+
+```bash
+php artisan storage:link
+```
+
+Jalankan Aplikasi
 
 ```bash
 php artisan serve
