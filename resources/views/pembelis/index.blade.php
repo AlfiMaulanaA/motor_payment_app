@@ -8,6 +8,7 @@
 
         <!-- Tombol Tambah Pembeli -->
         <a href="{{ route('pembelis.create') }}" class="btn btn-primary mb-3">Tambah Pembeli</a>
+        <a href="{{ route('pembelis.export.csv') }}" class="btn btn-success mb-3">Export ke CSV</a>
 
         <!-- Tabel Data Pembeli -->
         <div class="table-responsive">

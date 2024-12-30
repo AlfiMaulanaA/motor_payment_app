@@ -77,4 +77,32 @@ class BeliKreditController extends Controller
         $beliKredit->delete();
         return redirect()->route('beli-kredit.index')->with('success', 'Transaksi kredit berhasil dihapus!');
     }
+
+    public function exportToCsv()
+    {
+        $beliKredit = BeliKredit::with(['pembeli', 'motor', 'paket'])->get();
+
+        $fileName = "beli_kredit_" . date('YmdHis') . ".csv";
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+
+        $output = fopen('php://output', 'w');
+        fputcsv($output, ['Kode Kredit', 'Pembeli (No KTP)', 'Motor (Kode)', 'Paket (Kode)', 'Tanggal', 'Fotokopi KTP', 'Fotokopi KK', 'Fotokopi Slip Gaji']);
+
+        foreach ($beliKredit as $kredit) {
+            fputcsv($output, [
+                $kredit->kridit_kode,
+                $kredit->pembeli->pembeli_No_KTP,
+                $kredit->motor->motor_kode,
+                $kredit->paket->paket_kode,
+                $kredit->kridit_tanggal,
+                $kredit->fotokopi_KTP ? 'Ya' : 'Tidak',
+                $kredit->fotokopi_KK ? 'Ya' : 'Tidak',
+                $kredit->fotokopi_slip_gaji ? 'Ya' : 'Tidak',
+            ]);
+        }
+
+        fclose($output);
+        exit;
+    }
 }

@@ -6,6 +6,8 @@
     <div class="container">
         <h1 class="my-4">Daftar Pengguna</h1>
         <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">Tambah Pengguna</a>
+        <a href="{{ route('users.export.csv') }}" class="btn btn-success mb-3">Export Users ke CSV</a>
+
         <table class="table table-bordered">
             <thead>
                 <tr>

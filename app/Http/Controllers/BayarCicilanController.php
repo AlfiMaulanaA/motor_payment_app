@@ -73,4 +73,31 @@ class BayarCicilanController extends Controller
         $bayarCicilan->delete();
         return redirect()->route('bayar-cicilan.index')->with('success', 'Pembayaran cicilan berhasil dihapus!');
     }
+
+    public function exportToCsv()
+    {
+        $bayarCicilan = BayarCicilan::with('beliKredit')->get();
+
+        $fileName = "bayar_cicilan_" . date('YmdHis') . ".csv";
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+
+        $output = fopen('php://output', 'w');
+        fputcsv($output, ['Kode Cicilan', 'Kode Kredit', 'Tanggal Cicilan', 'Jumlah Bayar', 'Cicilan Ke', 'Sisa Cicilan', 'Sisa Harga']);
+
+        foreach ($bayarCicilan as $cicilan) {
+            fputcsv($output, [
+                $cicilan->cicilan_kode,
+                $cicilan->beliKredit->kridit_kode ?? 'N/A',
+                $cicilan->cicilan_tanggal,
+                $cicilan->cicilan_jumlah,
+                $cicilan->cicilan_ke,
+                $cicilan->cicilan_sisa_ke,
+                $cicilan->cicilan_sisa_harga,
+            ]);
+        }
+
+        fclose($output);
+        exit;
+    }
 }

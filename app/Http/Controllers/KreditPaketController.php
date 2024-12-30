@@ -64,4 +64,30 @@ class KreditPaketController extends Controller
         $kreditPaket->delete();
         return redirect()->route('kredit-paket.index')->with('success', 'Paket kredit berhasil dihapus!');
     }
+
+    public function exportToCsv()
+    {
+        $kreditPaket = KreditPaket::all();
+
+        $fileName = "kredit_paket_" . date('YmdHis') . ".csv";
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+
+        $output = fopen('php://output', 'w');
+        fputcsv($output, ['Kode Paket', 'Harga Cash', 'Uang Muka', 'Jumlah Cicilan', 'Bunga (%)', 'Nilai Cicilan']);
+
+        foreach ($kreditPaket as $paket) {
+            fputcsv($output, [
+                $paket->paket_kode,
+                $paket->paket_harga_cash,
+                $paket->paket_uang_muka,
+                $paket->paket_jumlah_cicilan,
+                $paket->paket_bunga,
+                $paket->paket_nilai_cicilan,
+            ]);
+        }
+
+        fclose($output);
+        exit;
+    }
 }

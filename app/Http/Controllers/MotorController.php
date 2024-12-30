@@ -84,4 +84,29 @@ class MotorController extends Controller
 
         return redirect()->route('motors.index')->with('success', 'Motor berhasil dihapus!');
     }
+
+    public function exportToCsv()
+    {
+        $motors = Motor::all(['motor_kode', 'motor_merk', 'motor_type', 'motor_harga', 'motor_warna_pilihan']);
+
+        // Nama file CSV
+        $fileName = "motors_export_" . date('YmdHis') . ".csv";
+
+        // Header untuk file CSV
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+
+        $output = fopen('php://output', 'w');
+
+        // Tambahkan heading kolom
+        fputcsv($output, ['Kode', 'Merk', 'Tipe', 'Harga', 'Warna']);
+
+        // Tambahkan data
+        foreach ($motors as $motor) {
+            fputcsv($output, $motor->toArray());
+        }
+
+        fclose($output);
+        exit;
+    }
 }

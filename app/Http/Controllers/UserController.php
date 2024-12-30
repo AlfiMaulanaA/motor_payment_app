@@ -67,4 +67,30 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('users.index')->with('success', 'User berhasil dihapus.');
     }
+
+    public function exportToCsv()
+    {
+        $users = User::with('role')->get();
+
+        $fileName = "users_" . date('YmdHis') . ".csv";
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+
+        $output = fopen('php://output', 'w');
+        fputcsv($output, ['ID', 'Nama', 'Email', 'Role', 'Created At', 'Updated At']);
+
+        foreach ($users as $user) {
+            fputcsv($output, [
+                $user->id,
+                $user->name,
+                $user->email,
+                $user->role->role_name ?? 'N/A',
+                $user->created_at,
+                $user->updated_at,
+            ]);
+        }
+
+        fclose($output);
+        exit;
+    }
 }

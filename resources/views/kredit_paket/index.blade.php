@@ -9,6 +9,7 @@
         <!-- Tombol Tambah Paket Kredit hanya untuk admin -->
         @can('manage-kredit-paket')
             <a href="{{ route('kredit-paket.create') }}" class="btn btn-primary mb-3">Tambah Paket Kredit</a>
+            <a href="{{ route('kredit-paket.export.csv') }}" class="btn btn-success mb-3">Export ke CSV</a>
         @endcan
 
         <table class="table table-bordered">

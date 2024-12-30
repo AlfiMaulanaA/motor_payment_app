@@ -9,6 +9,7 @@
         <!-- Tombol Tambah Pembayaran Cicilan hanya untuk admin -->
         @can('manage-bayar-cicilan')
             <a href="{{ route('bayar-cicilan.create') }}" class="btn btn-primary mb-3">Tambah Pembayaran Cicilan</a>
+            <a href="{{ route('bayar-cicilan.export.csv') }}" class="btn btn-success mb-3">Export Bayar Cicilan ke CSV</a>
         @endcan
 
         <table class="table table-bordered">

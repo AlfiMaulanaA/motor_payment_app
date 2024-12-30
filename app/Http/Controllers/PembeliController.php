@@ -60,4 +60,29 @@ class PembeliController extends Controller
         $pembeli->delete();
         return redirect()->route('pembelis.index')->with('success', 'Pembeli berhasil dihapus!');
     }
+
+    public function exportToCsv()
+    {
+        $pembelis = Pembeli::all(['pembeli_No_KTP', 'pembeli_nama', 'pembeli_alamat', 'pembeli_telpon', 'pembeli_HP']);
+
+        // Nama file CSV
+        $fileName = "pembelis_export_" . date('YmdHis') . ".csv";
+
+        // Header untuk file CSV
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+
+        $output = fopen('php://output', 'w');
+
+        // Tambahkan heading kolom
+        fputcsv($output, ['No KTP', 'Nama', 'Alamat', 'Telepon', 'HP']);
+
+        // Tambahkan data
+        foreach ($pembelis as $pembeli) {
+            fputcsv($output, $pembeli->toArray());
+        }
+
+        fclose($output);
+        exit;
+    }
 }

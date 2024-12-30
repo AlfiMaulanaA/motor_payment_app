@@ -6,6 +6,8 @@
     <div class="container">
         <h1>Daftar Transaksi Cash</h1>
         <a href="{{ route('beli-cash.create') }}" class="btn btn-primary mb-3">Tambah Transaksi Cash</a>
+        <a href="{{ route('beli-cash.export.csv') }}" class="btn btn-success mb-3">Export ke CSV</a>
+
         <table class="table table-bordered">
             <thead>
                 <tr>

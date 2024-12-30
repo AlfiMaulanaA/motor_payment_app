@@ -90,10 +90,13 @@ Route::middleware('auth')->group(function () {
         return view('kontak');
     })->name('kontak');
 
-
-    Route::get('/motors/export', function () {
-        return Excel::download(new MotorsExport, 'motors.xlsx');
-    })->name('motors.export');
+    Route::get('/motors/export/csv', [MotorController::class, 'exportToCsv'])->name('motors.export.csv');
+    Route::get('/pembelis/export/csv', [PembeliController::class, 'exportToCsv'])->name('pembelis.export.csv');
+    Route::get('/beli-cash/export/csv', [BeliCashController::class, 'exportToCsv'])->name('beli-cash.export.csv');
+    Route::get('/beli-kredit/export/csv', [BeliKreditController::class, 'exportToCsv'])->name('beli-kredit.export.csv');
+    Route::get('/kredit-paket/export/csv', [KreditPaketController::class, 'exportToCsv'])->name('kredit-paket.export.csv');
+    Route::get('/users/export/csv', [UserController::class, 'exportToCsv'])->name('users.export.csv');
+    Route::get('/bayar-cicilan/export/csv', [BayarCicilanController::class, 'exportToCsv'])->name('bayar-cicilan.export.csv');
 });
 
 require __DIR__ . '/auth.php';

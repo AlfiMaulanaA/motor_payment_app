@@ -68,4 +68,29 @@ class BeliCashController extends Controller
         $beliCash->delete();
         return redirect()->route('beli-cash.index')->with('success', 'Transaksi cash berhasil dihapus!');
     }
+
+    public function exportToCsv()
+    {
+        $beliCash = BeliCash::with(['pembeli', 'motor'])->get();
+
+        $fileName = "beli_cash_" . date('YmdHis') . ".csv";
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+
+        $output = fopen('php://output', 'w');
+        fputcsv($output, ['Kode Cash', 'Pembeli (No KTP)', 'Motor (Kode)', 'Tanggal', 'Bayar']);
+
+        foreach ($beliCash as $cash) {
+            fputcsv($output, [
+                $cash->cash_kode,
+                $cash->pembeli->pembeli_No_KTP,
+                $cash->motor->motor_kode,
+                $cash->cash_tanggal,
+                $cash->cash_bayar,
+            ]);
+        }
+
+        fclose($output);
+        exit;
+    }
 }
