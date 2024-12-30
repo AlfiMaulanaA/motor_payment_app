@@ -1,5 +1,7 @@
 <?php
 
+use App\Exports\MotorsExport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
@@ -87,6 +89,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/kontak', function () {
         return view('kontak');
     })->name('kontak');
+
+
+    Route::get('/motors/export', function () {
+        return Excel::download(new MotorsExport, 'motors.xlsx');
+    })->name('motors.export');
 });
 
 require __DIR__ . '/auth.php';

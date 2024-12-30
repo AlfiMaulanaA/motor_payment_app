@@ -10,6 +10,7 @@
         @can('manage-motors')
             <a href="{{ route('motors.create') }}" class="btn btn-primary mb-3">Tambah Motor</a>
         @endcan
+        <a href="{{ route('motors.export') }}" class="btn btn-success mb-3">Export ke Excel</a>
 
         <table class="table table-bordered table-striped">
             <thead>

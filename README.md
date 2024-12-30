@@ -251,7 +251,7 @@ php artisan config:cache
 Migrasi Database ke database dan buat database
 
 ```bash
-php artisan migrate
+php artisan migrate --seed
 ```
 
 Mehubungkan dan aktifkan fungsi storage untuk gambar
